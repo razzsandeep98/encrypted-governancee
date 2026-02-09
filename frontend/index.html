@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Encrypted Governance Portal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{
+ background: radial-gradient(circle at 30% 20%, #1a0f3a, #000000 60%);
+}
+.glow{
+ box-shadow:0 0 25px rgba(147,51,234,.6);
+}
+</style>
+</head>
+
+<body class="text-white min-h-screen">
+
+<div class="text-center mt-20">
+<h1 class="text-5xl font-bold">Encrypted Governance</h1>
+<p class="text-gray-400 mt-3">
+Votes remain private until final tally.
+</p>
+</div>
+
+<div class="mt-16 flex flex-col items-center">
+
+<div class="bg-gray-900 border border-gray-700 p-8 rounded-xl w-96 text-center glow">
+<h2 class="text-xl font-semibold">Proposal #1</h2>
+<p class="text-gray-400 mt-2">
+Should the community fund Project Alpha?
+</p>
+
+<div class="flex gap-4 mt-6">
+<button onclick="castVote('yes')"
+class="bg-green-600 px-4 py-2 rounded w-full">
+Vote Yes
+</button>
+
+<button onclick="castVote('no')"
+class="bg-red-600 px-4 py-2 rounded w-full">
+Vote No
+</button>
+</div>
+
+<button onclick="revealResult()"
+class="bg-purple-600 px-4 py-2 rounded w-full mt-4">
+Reveal Final Result
+</button>
+
+<p id="status" class="mt-4 text-gray-300">
+No votes yet.
+</p>
+</div>
+
+</div>
+
+<script>
+let encryptedYes = 0;
+let encryptedNo = 0;
+let votingClosed = false;
+
+function castVote(type){
+ if(votingClosed){
+  document.getElementById("status").innerText="Voting Closed";
+  return;
+ }
+
+ if(type==="yes") encryptedYes++;
+ else encryptedNo++;
+
+ document.getElementById("status").innerText=
+  "Vote Cast Securely 🔒";
+}
+
+function revealResult(){
+ votingClosed=true;
+
+ document.getElementById("status").innerText=
+  "Final Tally → YES: "+encryptedYes+
+  " | NO: "+encryptedNo;
+}
+</script>
+
+</body>
+</html>
