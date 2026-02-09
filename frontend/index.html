@@ -2,96 +2,110 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Encrypted Governance Portal</title>
+<title>Encrypted Governance</title>
 <script src="https://cdn.tailwindcss.com"></script>
+
 <style>
 body{
- background: radial-gradient(circle at 30% 20%, #1a0f3a, #000000 60%);
+ background: radial-gradient(circle at 20% 20%, #1b0c3a, #000000 60%);
 }
+
 .glow{
- box-shadow:0 0 25px rgba(147,51,234,.6);
+ box-shadow:0 0 30px rgba(147,51,234,.5);
+}
+
+.fade{
+ animation: fadeIn .6s ease-in-out;
+}
+@keyframes fadeIn{
+ from{opacity:0; transform:translateY(10px)}
+ to{opacity:1; transform:translateY(0)}
 }
 </style>
 </head>
 
 <body class="text-white min-h-screen">
 
-<div class="text-center mt-20">
-<h1 class="text-5xl font-bold">Encrypted Governance</h1>
-<p class="text-gray-400 mt-3 max-w-xl mx-auto">
-Votes are encrypted client-side and submitted as ciphertext.
-Arcium confidential compute is used to aggregate encrypted votes
-without revealing individual choices.
-Only the final tally is decrypted and published.
-</p>
-
+<!-- NAV -->
+<div class="flex justify-between px-8 py-6 text-sm text-gray-300">
+  <h1 class="tracking-widest font-semibold">ENCRYPTED GOV</h1>
+  <p>Solana + Arcium</p>
 </div>
 
-<div class="mt-16 flex flex-col items-center">
+<!-- HERO -->
+<div class="text-center mt-24 px-4">
+  <h2 class="text-6xl font-bold leading-tight">
+    Private Voting<br>Onchain
+  </h2>
 
-<div class="bg-gray-900 border border-gray-700 p-8 rounded-xl w-96 text-center glow">
-<h2 class="text-xl font-semibold">Proposal #1</h2>
+  <p class="text-gray-400 mt-6 max-w-2xl mx-auto">
+    Votes are encrypted client-side and submitted as ciphertext.
+    Arcium confidential compute aggregates encrypted votes without
+    revealing individual choices. Only the final tally is decrypted
+    and published to Solana.
+  </p>
+
+  <button onclick="scrollToApp()"
+   class="mt-8 bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-lg glow">
+   Enter Portal
+  </button>
+</div>
+
+<!-- APP -->
+<div id="app" class="mt-40 flex justify-center fade">
+
+<div class="bg-gray-900 border border-gray-700 p-10 rounded-2xl w-[420px] text-center glow">
+
+<h3 class="text-2xl font-semibold">Community Proposal</h3>
 <p class="text-gray-400 mt-2">
-Should the community fund Project Alpha?
+Should the DAO fund Project Alpha?
 </p>
 
-<div class="flex gap-4 mt-6">
+<div class="flex gap-4 mt-8">
 <button onclick="castVote('yes')"
-class="bg-green-600 px-4 py-2 rounded w-full">
+ class="bg-green-600 hover:bg-green-700 px-5 py-2 rounded w-full">
 Vote Yes
 </button>
 
 <button onclick="castVote('no')"
-class="bg-red-600 px-4 py-2 rounded w-full">
+ class="bg-red-600 hover:bg-red-700 px-5 py-2 rounded w-full">
 Vote No
 </button>
 </div>
 
 <button onclick="revealResult()"
-class="bg-purple-600 px-4 py-2 rounded w-full mt-4">
+ class="bg-purple-600 hover:bg-purple-700 px-5 py-2 rounded w-full mt-6">
 Reveal Final Result
 </button>
 
-<p id="status" class="mt-4 text-gray-300">
+<p id="status" class="mt-6 text-gray-300">
 No votes yet.
+</p>
+
+</div>
+</div>
+
+<!-- FOOTER INFO -->
+<div class="mt-32 text-center text-gray-500 text-sm px-4">
+<p>
+Confidential Governance powered by encrypted compute.
+No individual votes are ever exposed.
 </p>
 </div>
 
-</div>
-
 <script>
-let encryptedYes = 0;
-let encryptedNo = 0;
-let votingClosed = false;
+let encryptedYes=[];
+let encryptedNo=[];
+let votingClosed=false;
 
-function castVote(type){
- if(votingClosed){
-  document.getElementById("status").innerText="Voting Closed";
-  return;
- }
+const status=document.getElementById("status");
 
- if(type==="yes") encryptedYes++;
- else encryptedNo++;
-
- document.getElementById("status").innerText=
-  "Vote Cast Securely 🔒";
+function scrollToApp(){
+ document.getElementById("app").scrollIntoView({behavior:"smooth"});
 }
 
-function revealResult(){
- votingClosed=true;
-
- document.getElementById("status").innerText=
-  "Final Tally → YES: "+encryptedYes+
-  " | NO: "+encryptedNo;
-}
-<script>
-let encryptedYes = [];
-let encryptedNo = [];
-let votingClosed = false;
-
-// fake encryption layer (simulation)
 function encryptVote(v){
-  return btoa(v + Math.random()); 
+ return btoa(v + Math.random());
 }
 
 function castVote(type){
@@ -100,7 +114,7 @@ function castVote(type){
   return;
  }
 
- const encrypted = encryptVote(type);
+ const encrypted=encryptVote(type);
 
  if(type==="yes") encryptedYes.push(encrypted);
  else encryptedNo.push(encrypted);
@@ -111,9 +125,9 @@ function castVote(type){
 function revealResult(){
  votingClosed=true;
 
- status.innerText =
-  "Final Encrypted Tally → YES: " + encryptedYes.length +
-  " | NO: " + encryptedNo.length;
+ status.innerText=
+  "Final Tally → YES: "+encryptedYes.length+
+  " | NO: "+encryptedNo.length;
 }
 </script>
 
